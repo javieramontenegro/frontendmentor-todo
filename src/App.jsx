@@ -2,6 +2,8 @@ import { useState } from "react";
 import CardTodo from "./components/CardTodo";
 import "./App.css";
 import CreateTodo from "./components/CreateTodo";
+import Moon from "./components/svg/Moon";
+import CardInfo from "./components/CardInfo";
 
 const initialState = [
     { id: 1, title: "Estudiar", completed: false },
@@ -37,6 +39,24 @@ const App = () => {
         //recorro el array si "e" el elmento actual recorrido es distinto al id seleccionado se mostrara en el array filtrado
         setTodo(todo.filter((e) => e.id !== id));
     };
+    const editTodo = (id) => {
+        //seteo el estado , mapeo el array de tareas buscando el id esacto luego al encontrarlo que me haga una copia del objeto y a la propiedad completed me cambie el booleano, si no se cumple me devuelve el objeto
+        setTodo(
+            todo.map((e) =>
+                e.id === id ? { ...e, completed: !e.completed } : e
+            )
+        );
+    };
+    const itemLeft = () => {
+        const left = todo.filter((e) => !e.completed).length;
+
+        return left;
+    };
+    const clearCompleted = () => {
+        const filteredTodos = todo.filter((e) => !e.completed);
+        setTodo(filteredTodos);
+        console.log("click", filteredTodos);
+    };
 
     return (
         <>
@@ -47,17 +67,7 @@ const App = () => {
                             to do
                         </h1>
                         <button className="">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="26"
-                                height="26"
-                            >
-                                <path
-                                    fill="#FFF"
-                                    fillRule="evenodd"
-                                    d="M13 0c.81 0 1.603.074 2.373.216C10.593 1.199 7 5.43 7 10.5 7 16.299 11.701 21 17.5 21c2.996 0 5.7-1.255 7.613-3.268C23.22 22.572 18.51 26 13 26 5.82 26 0 20.18 0 13S5.82 0 13 0z"
-                                />
-                            </svg>
+                            <Moon />
                         </button>
                     </div>
                 </header>
@@ -72,8 +82,13 @@ const App = () => {
                             todo={todo}
                             key={index}
                             removeTodo={removeTodo}
+                            editTodo={editTodo}
                         />
                     ))}
+                    <CardInfo
+                        itemLeft={itemLeft}
+                        clearCompleted={clearCompleted}
+                    />
                 </main>
             </div>
         </>

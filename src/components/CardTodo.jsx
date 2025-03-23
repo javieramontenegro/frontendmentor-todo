@@ -1,23 +1,25 @@
-const CardTodo = ({ todo, removeTodo }) => {
+import Close from "./svg/Close";
+import Ticket from "./svg/Ticket";
+const CardTodo = ({ todo, removeTodo, editTodo }) => {
+    const { title, completed } = todo;
     return (
-        <div className="mt-4 bg-white py-4 px-2 rounded-md flex items-center text-black justify-between ">
+        <div className="mt-4 bg-white py-4 px-4 rounded-md flex items-center text-black justify-between ">
             <div className="gap-2 flex items-center">
-                <span className="h-5 w-5 inline-block rounded-full border-1 "></span>
-                <p> {todo.title}</p>
+                <button
+                    className={`h-5 w-5 rounded-full border-1 flex justify-center items-center ${completed ? "bg-linear-65 from-purple-500 to-pink-500 border-gray-300 " : "bg-white"}`}
+                    onClick={() => editTodo(todo.id)}
+                >
+                    {completed ? <Ticket /> : ""}
+                </button>
+                <p
+                    className={`${completed ? "line-through text-gray-300" : ""}`}
+                >
+                    {" "}
+                    {title}
+                </p>
             </div>
             <button onClick={() => removeTodo(todo.id)}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    className=""
-                >
-                    <path
-                        fill="#494C6B"
-                        fillRule="evenodd"
-                        d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"
-                    />
-                </svg>
+                <Close />
             </button>
         </div>
     );
